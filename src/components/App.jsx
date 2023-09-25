@@ -1,7 +1,5 @@
 import Notiflix from 'notiflix';
 import { RotatingLines } from 'react-loader-spinner';
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
 import { Component } from 'react';
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
@@ -9,13 +7,6 @@ import Button from './Button/Button';
 import getImagesAPI from './services/GalleryAPI';
 import css from './App.module.css';
 
-
-//--------налаштування для simpleLightBox---------
-let lightbox = new SimpleLightbox('.gallery a', {
-  caption: true,
-  captionsData: 'alt',
-  captionDelay: 250,
-});
 
 class App extends Component {
   state = {
@@ -39,7 +30,6 @@ class App extends Component {
 
   //ф-ція до сторінки прибавляє 1 (викликається при натиску на кнопку load more)
   changePage = e => {
-    // e.preventDefault();
     this.setState(prevState => ({
       page: prevState.page + 1,
     }));

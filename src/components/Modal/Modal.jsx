@@ -34,7 +34,7 @@ export default class Modal extends Component{
                  <img
                    className={css.image}
                    src={this.props.src}
-                   alt="picture"
+                  
                  />
                </div>
              </div>,
