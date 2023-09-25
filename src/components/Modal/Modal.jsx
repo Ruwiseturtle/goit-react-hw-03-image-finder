@@ -7,8 +7,7 @@ const modalRoot = document.querySelector('#modal-root');
 
 export default class Modal extends Component{
    
-  componentDidMount() {
-      console.log('escape');
+  componentDidMount() {  
         window.addEventListener('keydown', this.handleKeyDown)
   }
   
@@ -23,18 +22,14 @@ export default class Modal extends Component{
        }            
     }
   
-    render() { 
-        // this.props.children
-        console.log("check");
-        console.log(this.props.src);
-        
+    render() {        
            return createPortal(
              <div className={css.overlay} onClick={this.props.onClose}>
                <div className={css.modal}>
                  <img
                    className={css.image}
                    src={this.props.src}
-                  
+                   alt={this.props.alt}
                  />
                </div>
              </div>,

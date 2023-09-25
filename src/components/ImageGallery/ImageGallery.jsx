@@ -14,12 +14,15 @@ class ImageGallery extends Component {
     this.setState(({ showModal }) => ({
       showModal: false,
       modalUrl: '',
+      modalAlt: '',
     }));
   };
 
   handleClick = e => {
+  
     this.setState({
       modalUrl: e.target.attributes.srcbig.value,
+      modalAlt: e.target.attributes.alt,
       showModal: true,
     });
   };
@@ -52,6 +55,7 @@ class ImageGallery extends Component {
             <Modal
               onClose={this.onClose}
               src={this.state.modalUrl}
+              alt={this.state.modalAlt}
             ></Modal>
           )}
         </div>

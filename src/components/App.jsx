@@ -73,7 +73,6 @@ class App extends Component {
   renderData = async data => {
     const { page, per_page } = this.state;
 
-    console.log(data.data);
     //якщо набрали строку, по якому на бекенді немає картинок
     if (data.data.total === 0) {
       this.setState({
@@ -114,7 +113,6 @@ class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(this.state.UrlimgForModal);
     if (this.state.requestName === '') {
       Notiflix.Notify.info('Please fill out the search bar');
       return;
