@@ -8,7 +8,7 @@ async function getImagesAPI(requestName, page, per_page) {
   const url = BASE_URL + '?q=' + requestName + '&page=' + page +
     '&key=' + KEY + '&image_type=photo&orientation=horizontal&per_page=' + per_page;
   console.log(requestName);
-  const data = await axios.get(url);
+  const data  = await axios.get(url);
   return data;
 }
 

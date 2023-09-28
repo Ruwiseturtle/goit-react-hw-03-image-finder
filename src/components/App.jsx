@@ -7,7 +7,6 @@ import Button from './Button/Button';
 import getImagesAPI from './services/GalleryAPI';
 import css from './App.module.css';
 
-
 class App extends Component {
   state = {
     gallery: [],
@@ -15,12 +14,9 @@ class App extends Component {
     page: 1,
     showBtnLoadMore: false,
     per_page: 12,
-    status: 'idle',
     isLoading: false,
-        
   };
 
-  
   //отримуємо параметр запиту з компонента search
   getFirstRequestParameters = param => {
     this.setState({
@@ -56,22 +52,34 @@ class App extends Component {
   /********************************************** */
   getApiData() {
     const { requestName, page, per_page } = this.state;
-    this.setState({
-      isLoading: true,
-      showBtnLoadMore: false,
-    });
-    getImagesAPI(requestName, page, per_page)
-      .then(result => {
-        return result;
-      })
-      .then(this.renderData)
-      .catch(this.errorApi);
+
+    try {
+      this.setState({
+        isLoading: true,
+        showBtnLoadMore: false,
+      });
+
+      getImagesAPI(requestName, page, per_page)
+        .then(result => {
+          return result;
+        })
+        .then(this.renderData)
+        .catch(this.errorApi);
+    } catch (error) {
+      console.log('catch');
+    }
   }
 
   /***************************************** */
   //при успішному запиті до бекенду
   renderData = async data => {
     const { page, per_page } = this.state;
+
+    if (this.state.isLoading === true) {
+      this.setState({
+        isLoading: false,
+      });
+    }
 
     //якщо набрали строку, по якому на бекенді немає картинок
     if (data.data.total === 0) {
@@ -85,7 +93,6 @@ class App extends Component {
     await this.setState(prevstate => ({
       //  gallery: [...data.data.hits],
       gallery: [...prevstate.gallery, ...data.data.hits],
-      status: 'resolved',
     }));
 
     if (Math.ceil(per_page * page) >= data.data.totalHits) {
@@ -100,15 +107,14 @@ class App extends Component {
     });
   };
 
-  //помилка, яка виникаэ коли картинки немає по запиту, який ввів користувач
+  //помилка, яка виникає коли пропадає інтернет
   errorApi = error => {
     this.hideButton();
     Notiflix.Notify.info(
-      'Чьто-то пошло не так :( Проверьте соединение с сетью'
+      'Что-то пошло не так :( Проверьте соединение с сетью'
     );
-
     this.setState({
-      status: 'rejected',
+      isLoading: false
     });
   };
 
@@ -122,7 +128,10 @@ class App extends Component {
         gallery: [],
         page: 1,
       });
-      this.getApiData();
+      if (this.state.page === 1) {
+        this.getApiData();
+      }
+      
     } else if (this.state.page !== prevState.page) {
       this.getApiData();
     }
@@ -136,7 +145,6 @@ class App extends Component {
         ></Searchbar>
         <ImageGallery
           gallery={this.state.gallery}
-          status={this.state.status}        
           // changeItems={this.changeItems}
         ></ImageGallery>
         {this.state.isLoading && (
@@ -153,7 +161,6 @@ class App extends Component {
         {this.state.showBtnLoadMore && (
           <Button text="Load more" handleClick={this.changePage}></Button>
         )}
-       
       </div>
     );
   }
@@ -170,7 +177,5 @@ Notiflix.Notify.init({
   timeout: 3000,
   // ...
 });
-
-
 
 export default App;
